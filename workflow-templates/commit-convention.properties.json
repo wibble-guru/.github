@@ -1,0 +1,6 @@
+{
+  "name": "Commit convention (O2)",
+  "description": "PR 제목과 커밋 메시지가 O2 커밋 규칙(type: subject)을 지키는지 검사합니다.",
+  "iconName": "octicon check-circle",
+  "categories": ["Continuous integration"]
+}

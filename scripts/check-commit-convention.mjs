@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// O2 커밋 규칙 검사(CI용). 로컬 Claude hook(.claude/hooks/lib/check-commit-msg.mjs)과 같은 규칙이다.
+// O2 커밋 규칙 검사(CI용). .github/workflows/commit-convention.yml(재사용 워크플로)이 호출한다.
 //   node check-commit-convention.mjs "feat: 로그인 화면 구현"     → 한 줄 검사
 //   git log --format=%s A..B | node check-commit-convention.mjs   → 여러 줄(stdin) 검사
 // 하나라도 틀리면 exit 1. GitHub이 자동으로 만든 "Merge branch …"/"Revert …"는 경고만 한다.

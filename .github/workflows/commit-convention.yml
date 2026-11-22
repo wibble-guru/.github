@@ -1,0 +1,41 @@
+name: commit-convention
+
+# 조직 공용 재사용 워크플로. PR 제목과 커밋 첫 줄이 O2 커밋 규칙(type: subject)을 지키는지 검사한다.
+# 각 저장소에서는 아래처럼 호출만 한다 (workflow-templates/commit-convention.yml 참고).
+#   jobs:
+#     check:
+#       uses: wibble-guru/.github/.github/workflows/commit-convention.yml@main
+on:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # 검사 스크립트는 이 .github 저장소에서 가져온다.
+      - uses: actions/checkout@v4
+        with:
+          repository: wibble-guru/.github
+          path: .org-config
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: PR 제목
+        env:
+          TITLE: ${{ github.event.pull_request.title }}
+        run: node .org-config/scripts/check-commit-convention.mjs "$TITLE"
+
+      - name: 커밋 메시지
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+        run: git log --format=%s "$BASE..$HEAD" | node .org-config/scripts/check-commit-convention.mjs
